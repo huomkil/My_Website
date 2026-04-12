@@ -1,2 +1,2 @@
 ### 启动命令
-uv run uvicorn src.main:app --reload
+uv run python -m uvicorn src.main:app --reload
