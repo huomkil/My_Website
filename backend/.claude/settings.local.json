@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"from src.api.v1.user_api import router; print\\('OK'\\)\")"
+    ]
+  }
+}
