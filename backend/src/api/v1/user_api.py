@@ -10,7 +10,6 @@ service = UserService()
 @router.post("/", response_model=UserResponse, status_code=201)
 async def create_user(data: UserCreate):
     """创建用户"""
-    print("666")
     return service.create(data)
 
 
