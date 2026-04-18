@@ -18,6 +18,12 @@ app = FastAPI(
     version="0.1.0",
 )
 
+
+@app.get("/")
+async def root():
+    print("Hello, World!")
+    return {"message": "Welcome to My API", "docs": "/docs"}
+
 # 配置 CORS
 app.add_middleware(
     CORSMiddleware,

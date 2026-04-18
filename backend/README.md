@@ -43,10 +43,19 @@
 backend/
 ├── src/                      # 项目源代码
 │   ├── api/                  # API 路由层
-│   │   └── v1/               # API 版本控制
-│   │       └── api.py        # v1 路由定义
+│   │   └── v1/               # API v1 版本
+│   │       └── user_api.py   # 用户相关接口
+│   ├── core/                 # 核心配置与工具
 │   ├── db/                   # 数据库配置
 │   │   └── aa.py             # 数据库连接与会话
+│   ├── langchain_workflow/   # LangChain 工作流
+│   ├── models/               # 数据模型
+│   ├── routes/               # 路由聚合
+│   ├── schemas/              # 请求/响应 Schema
+│   │   └── user_schemas.py   # 用户数据模型
+│   ├── servers/              # 业务逻辑层
+│   │   └── user_service.py   # 用户服务
+│   ├── utils/                # 工具函数
 │   ├── main.py               # FastAPI 应用入口
 │   └── __init__.py
 ├── tests/                    # 单元测试
@@ -80,10 +89,10 @@ uv sync --all-extras
 
 ### 环境变量配置
 
-复制 `.env` 文件并修改配置：
+复制 `.env.example` 文件并修改配置：
 
 ```bash
-cp .env .env.example
+cp .env.example .env
 ```
 
 | 变量名 | 说明 | 默认值 |
@@ -131,11 +140,25 @@ docker compose down
 | GET | `/user/{user}` | 返回指定用户 ID |
 | GET | `/user` | 分页查询用户列表（参数：`page`, `size`） |
 
+### 用户管理接口（`/api/v1/users`）
+
+| 方法 | 路径 | 说明 | 请求体 |
+|------|------|------|--------|
+| POST | `/api/v1/users/` | 创建用户 | `UserCreate`（username, email, age?） |
+| GET | `/api/v1/users/{user_id}` | 获取用户 | — |
+| GET | `/api/v1/users/` | 用户列表（参数：`skip`, `limit`） | — |
+| PATCH | `/api/v1/users/{user_id}` | 更新用户 | `UserUpdate`（username?, email?, age?） |
+| DELETE | `/api/v1/users/{user_id}` | 删除用户 | — |
+
 ## 系统规划
 
 ### 用户系统
 
 用于用户登录和数据隔离，确保不同用户的数据相互独立。
+
+- [x] 用户创建、获取、更新、删除接口（`/api/v1/users`）
+- [ ] 用户认证与登录
+- [ ] 数据隔离
 
 ### 知识库系统
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Path
 
-from src.schemas.user import UserCreate, UserUpdate, UserResponse
+from src.schemas.user_schemas import UserCreate, UserUpdate, UserResponse
 from src.servers.user_service import UserService
 
 router = APIRouter(prefix="/users", tags=["user"])
@@ -10,6 +10,7 @@ service = UserService()
 @router.post("/", response_model=UserResponse, status_code=201)
 async def create_user(data: UserCreate):
     """创建用户"""
+    print("666")
     return service.create(data)
 
 
