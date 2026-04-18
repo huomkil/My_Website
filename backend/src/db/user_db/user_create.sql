@@ -1,24 +1,23 @@
-CREATE TABLE IF NOT EXISTS `users` (
-    `id` INT NOT NULL AUTO_INCREMENT,
-    `user_id` VARCHAR(36) NOT NULL COMMENT '用户 ID，UUID',
-    `user_phone` VARCHAR(20) NOT NULL COMMENT '用户手机号',
-    `user_password` VARCHAR(100) NOT NULL COMMENT '用户密码，存储哈希值',
-    `user_name` VARCHAR(50) NOT NULL COMMENT '用户名',
-    `user_level` INT NOT NULL DEFAULT 1 COMMENT '用户等级',
-    `user_tag` VARCHAR(50) DEFAULT NULL COMMENT '用户标签，逗号分隔',
-    `user_email` VARCHAR(100) NOT NULL COMMENT '用户邮箱',
-    `user_age` INT DEFAULT NULL COMMENT '用户年龄',
-    `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    `is_deleted` TINYINT(1) DEFAULT 0 COMMENT '是否删除，0-未删除，1-已删除',
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_user_id` (`user_id`),
-    UNIQUE KEY `uk_user_phone` (`user_phone`),
-    UNIQUE KEY `uk_user_name` (`user_name`),
-    UNIQUE KEY `uk_user_email` (`user_email`),
-    KEY `idx_user_id` (`user_id`),
-    KEY `idx_user_phone` (`user_phone`),
-    KEY `idx_user_name` (`user_name`),
-    KEY `idx_user_email` (`user_email`),
-    KEY `idx_is_deleted` (`is_deleted`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+CREATE EXTENSION IF NOT EXISTS vector;
+
+-- 创建 users 表
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    user_id VARCHAR(36) NOT NULL,
+    user_phone VARCHAR(20) NOT NULL UNIQUE,
+    user_password VARCHAR(100) NOT NULL,
+    user_name VARCHAR(50) NOT NULL,
+    user_level INT NOT NULL DEFAULT 1,
+    user_tag VARCHAR(50) DEFAULT NULL,
+    user_email VARCHAR(100) DEFAULT NULL,
+    user_age INT DEFAULT NULL,
+    embedding VECTOR(1024) DEFAULT NULL,
+    create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    is_deleted SMALLINT NOT NULL DEFAULT 0
+);
+
+-- 创建索引
+CREATE INDEX IF NOT EXISTS idx_user_id ON users (user_id);
+CREATE INDEX IF NOT EXISTS idx_user_phone ON users (user_phone);
+CREATE INDEX IF NOT EXISTS idx_is_deleted ON users (is_deleted);

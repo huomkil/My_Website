@@ -7,7 +7,7 @@ class UserCreate(BaseModel):
     user_phone: str
     user_password: str
     user_name: str
-    user_email: EmailStr
+    user_email: Optional[EmailStr] = None
     user_age: Optional[int] = None
     user_level: int = 1
     user_tag: Optional[str] = None
@@ -29,7 +29,7 @@ class UserResponse(BaseModel):
     user_name: str
     user_level: int
     user_tag: Optional[str]
-    user_email: str
+    user_email: Optional[str]
     user_age: Optional[int]
 
     class Config:

@@ -1,16 +1,18 @@
 name: my_website
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: mysql
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: postgres
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_DATABASE}
     ports:
-      - "${MYSQL_PORT}:3306"
+      - "${PG_PORT}:5432"
     volumes:
-      - "${MYSQL_DATA_PATH}:/var/lib/mysql"
+      - "${PG_DATA_PATH}:/var/lib/postgresql/data"
+      - ./src/db/user_db/user_create.sql:/docker-entrypoint-initdb.d/init.sql
 
   redis:
     image: redis:7-alpine

@@ -13,16 +13,10 @@ from src.api.v1 import v1_router
 
 # 创建 FastAPI 应用
 app = FastAPI(
-    title="My API",
-    description="简单的 API 服务",
+    title="API 接口",
+    description="API 服务",
     version="0.1.0",
 )
-
-
-@app.get("/")
-async def root():
-    print("Hello, World!")
-    return {"message": "Welcome to My API", "docs": "/docs"}
 
 # 配置 CORS
 app.add_middleware(

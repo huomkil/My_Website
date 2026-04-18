@@ -15,6 +15,9 @@ class UserManager:
     def create(self, data: UserCreate) -> UserModel:
         """创建用户"""
         import uuid
+        if self.db.query(UserModel).filter(UserModel.user_phone == data.user_phone).first():
+            raise ValueError("User ID already exists")
+
         user = UserModel(
             user_id=str(uuid.uuid4()),
             **data.model_dump(),
@@ -23,6 +26,10 @@ class UserManager:
         self.db.commit()
         self.db.refresh(user)
         return user
+    
+    def list_all(self, skip: int = 0, limit: int = 10) -> List[UserModel]:
+        """获取用户列表"""
+        return self.db.query(UserModel).offset(skip).limit(limit).all()
 
     def get_by_id(self, user_id: int) -> Optional[UserModel]:
         """根据 ID 获取用户"""
